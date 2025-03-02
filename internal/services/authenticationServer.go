@@ -1,4 +1,4 @@
-package models
+package services
 
 import (
 	"User-Backend/api"
@@ -9,7 +9,7 @@ type AuthenticationServer struct {
 	api.UnimplementedAuthenticationServiceServer
 }
 
-func (s *AuthenticationServer) SignUp(ctx context.Context, req *api.SignUpRequest) (*api.SignUpResponse, error) {
+func (s *AuthenticationServer) SignUp(ctx context.Context, req *api.SignUpRequest) (*api.SignUpResponse, error) {	
 	return nil, nil
 }
 
