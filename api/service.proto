@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package userAPI;
+
+option go_package = "../api";
+
+service AuthenticationService{
+    rpc SignUp(SignUpRequest) returns (SignUpResponse);
+    rpc Login(LoginRequest) returns (LoginResponse);
+    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+    rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+    rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse);
+}
+
+service ClassManagerService{
+    rpc CreateClass(CreateClassRequest) returns (CreateClassResponse);
+    rpc GetClasses(GetClassesRequest) returns (GetClassesResponse);
+    rpc UpdateClass(UpdateClassRequest) returns (UpdateClassResponse);
+    rpc DeleteClass(DeleteClassRequest) returns (DeleteClassResponse);
+}
+
+service CourseManagerService{
+    rpc GetCourses(GetCoursesRequest) returns (GetCoursesResponse);
+}
+
+service SessionManagerService{
+    rpc StartSession(StartSessionRequest) returns (StartSessionResponse);
+    rpc EndSession(EndSessionRequest) returns (EndSessionResponse);
+    rpc JoinSession(JoinSessionRequest) returns (JoinSessionResponse);
+}
+
+service NotificationManagerService{
+    rpc GetNotifications(GetNotificationsRequest) returns (GetNotificationsResponse);
+}
+
+message SignUpRequest {
+}
+
+message SignUpResponse {
+}
+
+message LoginRequest {
+}
+
+message LoginResponse {
+}
+
+message RefreshTokenRequest {
+}
+
+message RefreshTokenResponse {
+}
+
+message ValidateTokenRequest {
+}
+
+message ValidateTokenResponse {
+}
+
+message ForgotPasswordRequest {
+}
+
+message ForgotPasswordResponse {
+}
+
+message CreateClassRequest {
+}
+
+message CreateClassResponse {
+}
+
+message GetClassesRequest {
+}
+
+message GetClassesResponse {
+}
+
+message Class {
+}
+
+message UpdateClassRequest {
+}
+
+message UpdateClassResponse {
+}
+
+message DeleteClassRequest {
+}
+
+message DeleteClassResponse {
+}
+
+message GetCoursesRequest {
+}
+
+message GetCoursesResponse {
+}
+
+message Course {
+}
+
+message StartSessionRequest {
+}
+
+message StartSessionResponse {
+}
+
+message EndSessionRequest {
+}
+
+message EndSessionResponse {
+}
+
+message JoinSessionRequest {
+}
+
+message JoinSessionResponse {
+}
+
+message GetNotificationsRequest {
+}
+
+message GetNotificationsResponse {
+}
+
+message Notification {
+}
