@@ -5,7 +5,9 @@ import (
 	"net"
 
 	"User-Backend/api"
-	"User-Backend/internal/services"
+	serverConf "User-Backend/internal/config"
+	"User-Backend/internal/middleware"
+	server "User-Backend/internal/servers"
 
 	"google.golang.org/grpc"
 )
@@ -15,16 +17,23 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	} else {
-		log.Printf("gRPC server listening at %v", listener.Addr())
+		log.Printf("gRPC server listening at 3000")
 	}
 
-	grpcServer := grpc.NewServer()
+	dbPool := serverConf.InitDB()
+	defer dbPool.Close()
 
-	api.RegisterAuthenticationServiceServer(grpcServer, &services.AuthenticationServer{})
-	api.RegisterClassManagerServiceServer(grpcServer, &services.ClassManagerServer{})
-	api.RegisterCourseManagerServiceServer(grpcServer, &services.CourseManagerServer{})
-	api.RegisterSessionManagerServiceServer(grpcServer, &services.SessionManagerServer{})
-	api.RegisterNotificationManagerServiceServer(grpcServer, &services.NotificationManagerServer{})
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(middleware.AuthInterceptor()),
+	)
+
+	authServer := server.NewAuthServer(dbPool)
+
+	api.RegisterAuthenticationServiceServer(grpcServer, authServer)
+	api.RegisterClassManagerServiceServer(grpcServer, &server.ClassManagerServer{})
+	api.RegisterCourseManagerServiceServer(grpcServer, &server.CourseManagerServer{})
+	api.RegisterSessionManagerServiceServer(grpcServer, &server.SessionManagerServer{})
+	api.RegisterNotificationManagerServiceServer(grpcServer, &server.NotificationManagerServer{})
 
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %s", err)

@@ -1,4 +1,4 @@
-package services
+package server
 
 import (
 	"User-Backend/api"
@@ -8,7 +8,6 @@ import (
 type ClassManagerServer struct {
 	api.UnimplementedClassManagerServiceServer
 }
-
 
 func (s *ClassManagerServer) CreateClass(ctx context.Context, req *api.CreateClassRequest) (*api.CreateClassResponse, error) {
 	return nil, nil
