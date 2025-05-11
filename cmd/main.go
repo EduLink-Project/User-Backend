@@ -28,12 +28,15 @@ func main() {
 	)
 
 	authServer := server.NewAuthServer(dbPool)
+	classroomManagerServer := server.NewClassManagerServer(dbPool)
+	sessionManagerServer := server.NewSessionsManager(dbPool)
+	notificationsManagerServer := server.NewNotificationsServer(dbPool)
 
 	api.RegisterAuthenticationServiceServer(grpcServer, authServer)
-	api.RegisterClassManagerServiceServer(grpcServer, &server.ClassManagerServer{})
-	api.RegisterCourseManagerServiceServer(grpcServer, &server.CourseManagerServer{})
-	api.RegisterSessionManagerServiceServer(grpcServer, &server.SessionManagerServer{})
-	api.RegisterNotificationManagerServiceServer(grpcServer, &server.NotificationManagerServer{})
+	api.RegisterClassManagerServiceServer(grpcServer, classroomManagerServer)
+	// api.RegisterCourseManagerServiceServer(grpcServer, &server.CourseManagerServer{})
+	api.RegisterSessionManagerServiceServer(grpcServer, sessionManagerServer)
+	api.RegisterNotificationManagerServiceServer(grpcServer, notificationsManagerServer)
 
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %s", err)
