@@ -4,153 +4,190 @@ package userAPI;
 
 option go_package = "../api";
 
-import "google/protobuf/empty.proto";
-import "google/protobuf/wrappers.proto";
-import "google/protobuf/timestamp.proto";
-
-service AuthenticationService{
+service Authentication{
     rpc SignUp(SignUpRequest) returns (SignUpResponse);
     rpc Login(LoginRequest) returns (LoginResponse);
+    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+    rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
 }
 
-service ClassManagerService{
+service ClassManager{
     rpc CreateClass(CreateClassRequest) returns (CreateClassResponse);
-    rpc GetInstructorClasses(google.protobuf.Empty) returns (GetInstructorClassesResponse);
-    rpc GetStudentClasses(google.protobuf.Empty) returns (GetStudentClassesResponse);
-    rpc EnrollStudents (EnrollStudentsRequest) returns (EnrollStudentsReponse);
+    rpc GetClasses(GetClassesRequest) returns (GetClassesResponse);
+    rpc UpdateClass(UpdateClassRequest) returns (UpdateClassResponse);
+    rpc DeleteClass(DeleteClassRequest) returns (DeleteClassResponse);
 }
 
-service SessionManagerService{
-    rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
-    rpc GetSessions (GetSessionsRequest) returns (GetSessionsResponse); 
-    rpc StartSession (StartSessionRequest) returns (StartSessionResponse);
+service CourseManager{
+    rpc GetCourses(GetCoursesRequest) returns (GetCoursesResponse);
 }
 
-service NotificationManagerService{
-    rpc GetNotifications(google.protobuf.Empty) returns (GetNotificationsResponse);
+service SessionManager{
+    rpc StartSession(StartSessionRequest) returns (StartSessionResponse);
+    rpc EndSession(EndSessionRequest) returns (EndSessionResponse);
 }
 
-message SessionDateTime {
-    string date = 1;
-    string time = 2;
-}
-
-message Sessions {
-    uint64 id = 1;
-    string title = 2;
-    string status = 3;
-    google.protobuf.Timestamp dateTime = 4;
-    bool questionsAllowance = 5;
-}
-
-message StudentVC {
-	uint64 id = 1;
-	string title = 2;       
-	string description = 3;
-	string instructor = 4 ;
-	string type = 5;
-}
-
-message InstructorVC {
-	uint64 id = 1;
-	string title = 2;       
-	string description = 3;
-	uint32 studentsLimit = 4;
-	string type = 5;
+service NotificationManager{
+    rpc GetNotifications(GetNotificationsRequest) returns (GetNotificationsResponse);
 }
 
 message SignUpRequest {
     string username = 1;
-    string password = 2;
-    string email = 3;
-    string firstname = 4;
-    string lastname = 5;
-    string role = 6;
+    string email = 2;
+    string password = 3;
+    string role = 4;
 }
-
+  
 message SignUpResponse {
-    string status = 1;
-    string token = 2;
+    bool success = 1;
+    string message = 2;
+    User user = 3;
 }
-
+  
 message LoginRequest {
     string email = 1;
     string password = 2;
-    string username = 3;
-    string role = 4;
 }
-
+  
 message LoginResponse {
+    bool success = 1;
+    string message = 2;
+    User user = 3;
+}
+  
+message RefreshTokenRequest { 
+    string refreshToken = 1;
+}
+  
+message RefreshTokenResponse {
+    bool success = 1;
+    string token = 2;
+}
+  
+message ValidateTokenRequest {
     string token = 1;
 }
+  
+message ValidateTokenResponse {
+    bool valid = 1;
+}  
 
-message RefreshTokenRequest {
-    string tokenID = 1;
+message CreateClassRequest {
+    string userId = 1;
+    string name = 2;
+    repeated string files = 3;
+    repeated string students = 4;
+    string startTime = 5;
+    string endTime = 6;
 }
 
 message CreateClassResponse {
-    string message = 1;
+    bool success = 1;
+    repeated string errorMessages = 2;
+    Class classroom = 3;
 }
 
-message CreateClassRequest {
-    string title = 1;
-    string description = 2;
-    uint32 studentsLimit = 3;
-    string type = 4;
+message GetClassesRequest {
+    string userId = 1;
 }
 
-message GetStudentClassesResponse {
-    repeated StudentVC VCs = 1;
-}
-message GetInstructorClassesResponse {
-    repeated InstructorVC VCs = 1;
-}  
-
-message EnrollStudentsRequest {
-    string studentEmail = 1;
-    uint64 vcid = 2;
+message GetClassesResponse {
+    repeated Class classrooms = 1;
 }
 
-message EnrollStudentsReponse {
-    string status = 1;
+message UpdateClassRequest {
+    string userId = 1;
+    Class classroom = 2;
 }
 
-message CreateSessionRequest {
-    uint64 vcid = 1;
-    bool questionsAllowance = 2;
-    SessionDateTime dateTime = 3;
-    string title = 4;
+message UpdateClassResponse {
+    Class classroom = 1;
 }
 
-message CreateSessionResponse {
-    string status = 1;
+message DeleteClassRequest {
+    string userId = 1;
+    string classroomId = 2;
 }
 
-message GetSessionsRequest {
-    google.protobuf.UInt64Value vcid = 1;
+message DeleteClassResponse {
+    bool success = 1;
+    repeated string errorMessages = 2;
 }
 
-message GetSessionsResponse {
-    repeated Sessions sessions = 1;
+message GetCoursesRequest {
+    string userId = 1;
+}
+  
+message GetCoursesResponse {
+    repeated Course courses = 1;
 }
 
 message StartSessionRequest {
-    google.protobuf.UInt64Value id = 1;
+    string userId = 1;
+    string classroomId = 2;
+    string name = 3;
 }
 
 message StartSessionResponse {
-    string status = 1;
+    bool success = 1;
+    repeated string errorMessages = 2;
+    Session session = 3;
 }
 
-message Notification {
-    uint64 id = 1;
-    string type = 2;
-    bool isread = 3;
-    string message = 4;
-    string title = 5;
-    google.protobuf.Timestamp createdAt = 6;
+message EndSessionRequest {
+    string userId = 1;
+    string classroomId = 2;
+    string sessionId = 3;
 }
 
+message EndSessionResponse {
+    bool success = 1;
+    repeated string errorMessages = 2;
+    Session session = 3;
+}
+
+message GetNotificationsRequest {
+    string userId = 1;
+}
+  
 message GetNotificationsResponse {
     repeated Notification notifications = 1;
+}  
+message Notification {
+    string id = 1;
+    string title = 2;
+    string subtitle = 3;
+    string time = 4;
+}
+
+message User {
+    string id = 1;
+    string username = 2;
+    string email = 3;
+    string token = 4;
+    string refreshToken = 5;
+}
+
+message Class {
+    string id = 1;
+    string name = 2;
+    string userId = 3;
+    repeated string files = 4;
+    repeated string students = 5;
+    string startTime = 6;
+    string endTime = 7;
+    repeated Session sessions = 8;
+}
+
+message Course {
+    string id = 1;
+    string name = 2;
+    repeated Session sessions = 3;
+}
+  
+message Session {
+    string id = 1;
+    string title = 2;
+    string date = 3;
+    bool isLive = 4;
 }

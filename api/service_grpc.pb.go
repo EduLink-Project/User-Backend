@@ -19,253 +19,215 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthenticationService_SignUp_FullMethodName         = "/userAPI.AuthenticationService/SignUp"
-	AuthenticationService_Login_FullMethodName          = "/userAPI.AuthenticationService/Login"
-	AuthenticationService_RefreshToken_FullMethodName   = "/userAPI.AuthenticationService/RefreshToken"
-	AuthenticationService_ValidateToken_FullMethodName  = "/userAPI.AuthenticationService/ValidateToken"
-	AuthenticationService_ForgotPassword_FullMethodName = "/userAPI.AuthenticationService/ForgotPassword"
+	Authentication_SignUp_FullMethodName        = "/userAPI.Authentication/SignUp"
+	Authentication_Login_FullMethodName         = "/userAPI.Authentication/Login"
+	Authentication_RefreshToken_FullMethodName  = "/userAPI.Authentication/RefreshToken"
+	Authentication_ValidateToken_FullMethodName = "/userAPI.Authentication/ValidateToken"
 )
 
-// AuthenticationServiceClient is the client API for AuthenticationService service.
+// AuthenticationClient is the client API for Authentication service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type AuthenticationServiceClient interface {
+type AuthenticationClient interface {
 	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
 	ValidateToken(ctx context.Context, in *ValidateTokenRequest, opts ...grpc.CallOption) (*ValidateTokenResponse, error)
-	ForgotPassword(ctx context.Context, in *ForgotPasswordRequest, opts ...grpc.CallOption) (*ForgotPasswordResponse, error)
 }
 
-type authenticationServiceClient struct {
+type authenticationClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAuthenticationServiceClient(cc grpc.ClientConnInterface) AuthenticationServiceClient {
-	return &authenticationServiceClient{cc}
+func NewAuthenticationClient(cc grpc.ClientConnInterface) AuthenticationClient {
+	return &authenticationClient{cc}
 }
 
-func (c *authenticationServiceClient) SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error) {
+func (c *authenticationClient) SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SignUpResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_SignUp_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Authentication_SignUp_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authenticationServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+func (c *authenticationClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(LoginResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_Login_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Authentication_Login_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authenticationServiceClient) RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error) {
+func (c *authenticationClient) RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(RefreshTokenResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_RefreshToken_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Authentication_RefreshToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authenticationServiceClient) ValidateToken(ctx context.Context, in *ValidateTokenRequest, opts ...grpc.CallOption) (*ValidateTokenResponse, error) {
+func (c *authenticationClient) ValidateToken(ctx context.Context, in *ValidateTokenRequest, opts ...grpc.CallOption) (*ValidateTokenResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ValidateTokenResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_ValidateToken_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Authentication_ValidateToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authenticationServiceClient) ForgotPassword(ctx context.Context, in *ForgotPasswordRequest, opts ...grpc.CallOption) (*ForgotPasswordResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ForgotPasswordResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_ForgotPassword_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// AuthenticationServiceServer is the server API for AuthenticationService service.
-// All implementations must embed UnimplementedAuthenticationServiceServer
+// AuthenticationServer is the server API for Authentication service.
+// All implementations must embed UnimplementedAuthenticationServer
 // for forward compatibility.
-type AuthenticationServiceServer interface {
+type AuthenticationServer interface {
 	SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
 	ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error)
-	ForgotPassword(context.Context, *ForgotPasswordRequest) (*ForgotPasswordResponse, error)
-	mustEmbedUnimplementedAuthenticationServiceServer()
+	mustEmbedUnimplementedAuthenticationServer()
 }
 
-// UnimplementedAuthenticationServiceServer must be embedded to have
+// UnimplementedAuthenticationServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedAuthenticationServiceServer struct{}
+type UnimplementedAuthenticationServer struct{}
 
-func (UnimplementedAuthenticationServiceServer) SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error) {
+func (UnimplementedAuthenticationServer) SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignUp not implemented")
 }
-func (UnimplementedAuthenticationServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
+func (UnimplementedAuthenticationServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedAuthenticationServiceServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
+func (UnimplementedAuthenticationServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
-func (UnimplementedAuthenticationServiceServer) ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error) {
+func (UnimplementedAuthenticationServer) ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidateToken not implemented")
 }
-func (UnimplementedAuthenticationServiceServer) ForgotPassword(context.Context, *ForgotPasswordRequest) (*ForgotPasswordResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ForgotPassword not implemented")
-}
-func (UnimplementedAuthenticationServiceServer) mustEmbedUnimplementedAuthenticationServiceServer() {}
-func (UnimplementedAuthenticationServiceServer) testEmbeddedByValue()                               {}
+func (UnimplementedAuthenticationServer) mustEmbedUnimplementedAuthenticationServer() {}
+func (UnimplementedAuthenticationServer) testEmbeddedByValue()                        {}
 
-// UnsafeAuthenticationServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AuthenticationServiceServer will
+// UnsafeAuthenticationServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AuthenticationServer will
 // result in compilation errors.
-type UnsafeAuthenticationServiceServer interface {
-	mustEmbedUnimplementedAuthenticationServiceServer()
+type UnsafeAuthenticationServer interface {
+	mustEmbedUnimplementedAuthenticationServer()
 }
 
-func RegisterAuthenticationServiceServer(s grpc.ServiceRegistrar, srv AuthenticationServiceServer) {
-	// If the following call pancis, it indicates UnimplementedAuthenticationServiceServer was
+func RegisterAuthenticationServer(s grpc.ServiceRegistrar, srv AuthenticationServer) {
+	// If the following call pancis, it indicates UnimplementedAuthenticationServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&AuthenticationService_ServiceDesc, srv)
+	s.RegisterService(&Authentication_ServiceDesc, srv)
 }
 
-func _AuthenticationService_SignUp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Authentication_SignUp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SignUpRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).SignUp(ctx, in)
+		return srv.(AuthenticationServer).SignUp(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthenticationService_SignUp_FullMethodName,
+		FullMethod: Authentication_SignUp_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).SignUp(ctx, req.(*SignUpRequest))
+		return srv.(AuthenticationServer).SignUp(ctx, req.(*SignUpRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthenticationService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Authentication_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).Login(ctx, in)
+		return srv.(AuthenticationServer).Login(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthenticationService_Login_FullMethodName,
+		FullMethod: Authentication_Login_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).Login(ctx, req.(*LoginRequest))
+		return srv.(AuthenticationServer).Login(ctx, req.(*LoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthenticationService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Authentication_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RefreshTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).RefreshToken(ctx, in)
+		return srv.(AuthenticationServer).RefreshToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthenticationService_RefreshToken_FullMethodName,
+		FullMethod: Authentication_RefreshToken_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).RefreshToken(ctx, req.(*RefreshTokenRequest))
+		return srv.(AuthenticationServer).RefreshToken(ctx, req.(*RefreshTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthenticationService_ValidateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Authentication_ValidateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ValidateTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).ValidateToken(ctx, in)
+		return srv.(AuthenticationServer).ValidateToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthenticationService_ValidateToken_FullMethodName,
+		FullMethod: Authentication_ValidateToken_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).ValidateToken(ctx, req.(*ValidateTokenRequest))
+		return srv.(AuthenticationServer).ValidateToken(ctx, req.(*ValidateTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthenticationService_ForgotPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ForgotPasswordRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).ForgotPassword(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthenticationService_ForgotPassword_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).ForgotPassword(ctx, req.(*ForgotPasswordRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-// AuthenticationService_ServiceDesc is the grpc.ServiceDesc for AuthenticationService service.
+// Authentication_ServiceDesc is the grpc.ServiceDesc for Authentication service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AuthenticationService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "userAPI.AuthenticationService",
-	HandlerType: (*AuthenticationServiceServer)(nil),
+var Authentication_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "userAPI.Authentication",
+	HandlerType: (*AuthenticationServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "SignUp",
-			Handler:    _AuthenticationService_SignUp_Handler,
+			Handler:    _Authentication_SignUp_Handler,
 		},
 		{
 			MethodName: "Login",
-			Handler:    _AuthenticationService_Login_Handler,
+			Handler:    _Authentication_Login_Handler,
 		},
 		{
 			MethodName: "RefreshToken",
-			Handler:    _AuthenticationService_RefreshToken_Handler,
+			Handler:    _Authentication_RefreshToken_Handler,
 		},
 		{
 			MethodName: "ValidateToken",
-			Handler:    _AuthenticationService_ValidateToken_Handler,
-		},
-		{
-			MethodName: "ForgotPassword",
-			Handler:    _AuthenticationService_ForgotPassword_Handler,
+			Handler:    _Authentication_ValidateToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -273,215 +235,215 @@ var AuthenticationService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	ClassManagerService_CreateClass_FullMethodName = "/userAPI.ClassManagerService/CreateClass"
-	ClassManagerService_GetClasses_FullMethodName  = "/userAPI.ClassManagerService/GetClasses"
-	ClassManagerService_UpdateClass_FullMethodName = "/userAPI.ClassManagerService/UpdateClass"
-	ClassManagerService_DeleteClass_FullMethodName = "/userAPI.ClassManagerService/DeleteClass"
+	ClassManager_CreateClass_FullMethodName = "/userAPI.ClassManager/CreateClass"
+	ClassManager_GetClasses_FullMethodName  = "/userAPI.ClassManager/GetClasses"
+	ClassManager_UpdateClass_FullMethodName = "/userAPI.ClassManager/UpdateClass"
+	ClassManager_DeleteClass_FullMethodName = "/userAPI.ClassManager/DeleteClass"
 )
 
-// ClassManagerServiceClient is the client API for ClassManagerService service.
+// ClassManagerClient is the client API for ClassManager service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ClassManagerServiceClient interface {
+type ClassManagerClient interface {
 	CreateClass(ctx context.Context, in *CreateClassRequest, opts ...grpc.CallOption) (*CreateClassResponse, error)
 	GetClasses(ctx context.Context, in *GetClassesRequest, opts ...grpc.CallOption) (*GetClassesResponse, error)
 	UpdateClass(ctx context.Context, in *UpdateClassRequest, opts ...grpc.CallOption) (*UpdateClassResponse, error)
 	DeleteClass(ctx context.Context, in *DeleteClassRequest, opts ...grpc.CallOption) (*DeleteClassResponse, error)
 }
 
-type classManagerServiceClient struct {
+type classManagerClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewClassManagerServiceClient(cc grpc.ClientConnInterface) ClassManagerServiceClient {
-	return &classManagerServiceClient{cc}
+func NewClassManagerClient(cc grpc.ClientConnInterface) ClassManagerClient {
+	return &classManagerClient{cc}
 }
 
-func (c *classManagerServiceClient) CreateClass(ctx context.Context, in *CreateClassRequest, opts ...grpc.CallOption) (*CreateClassResponse, error) {
+func (c *classManagerClient) CreateClass(ctx context.Context, in *CreateClassRequest, opts ...grpc.CallOption) (*CreateClassResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateClassResponse)
-	err := c.cc.Invoke(ctx, ClassManagerService_CreateClass_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ClassManager_CreateClass_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *classManagerServiceClient) GetClasses(ctx context.Context, in *GetClassesRequest, opts ...grpc.CallOption) (*GetClassesResponse, error) {
+func (c *classManagerClient) GetClasses(ctx context.Context, in *GetClassesRequest, opts ...grpc.CallOption) (*GetClassesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetClassesResponse)
-	err := c.cc.Invoke(ctx, ClassManagerService_GetClasses_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ClassManager_GetClasses_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *classManagerServiceClient) UpdateClass(ctx context.Context, in *UpdateClassRequest, opts ...grpc.CallOption) (*UpdateClassResponse, error) {
+func (c *classManagerClient) UpdateClass(ctx context.Context, in *UpdateClassRequest, opts ...grpc.CallOption) (*UpdateClassResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdateClassResponse)
-	err := c.cc.Invoke(ctx, ClassManagerService_UpdateClass_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ClassManager_UpdateClass_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *classManagerServiceClient) DeleteClass(ctx context.Context, in *DeleteClassRequest, opts ...grpc.CallOption) (*DeleteClassResponse, error) {
+func (c *classManagerClient) DeleteClass(ctx context.Context, in *DeleteClassRequest, opts ...grpc.CallOption) (*DeleteClassResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DeleteClassResponse)
-	err := c.cc.Invoke(ctx, ClassManagerService_DeleteClass_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ClassManager_DeleteClass_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ClassManagerServiceServer is the server API for ClassManagerService service.
-// All implementations must embed UnimplementedClassManagerServiceServer
+// ClassManagerServer is the server API for ClassManager service.
+// All implementations must embed UnimplementedClassManagerServer
 // for forward compatibility.
-type ClassManagerServiceServer interface {
+type ClassManagerServer interface {
 	CreateClass(context.Context, *CreateClassRequest) (*CreateClassResponse, error)
 	GetClasses(context.Context, *GetClassesRequest) (*GetClassesResponse, error)
 	UpdateClass(context.Context, *UpdateClassRequest) (*UpdateClassResponse, error)
 	DeleteClass(context.Context, *DeleteClassRequest) (*DeleteClassResponse, error)
-	mustEmbedUnimplementedClassManagerServiceServer()
+	mustEmbedUnimplementedClassManagerServer()
 }
 
-// UnimplementedClassManagerServiceServer must be embedded to have
+// UnimplementedClassManagerServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedClassManagerServiceServer struct{}
+type UnimplementedClassManagerServer struct{}
 
-func (UnimplementedClassManagerServiceServer) CreateClass(context.Context, *CreateClassRequest) (*CreateClassResponse, error) {
+func (UnimplementedClassManagerServer) CreateClass(context.Context, *CreateClassRequest) (*CreateClassResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateClass not implemented")
 }
-func (UnimplementedClassManagerServiceServer) GetClasses(context.Context, *GetClassesRequest) (*GetClassesResponse, error) {
+func (UnimplementedClassManagerServer) GetClasses(context.Context, *GetClassesRequest) (*GetClassesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClasses not implemented")
 }
-func (UnimplementedClassManagerServiceServer) UpdateClass(context.Context, *UpdateClassRequest) (*UpdateClassResponse, error) {
+func (UnimplementedClassManagerServer) UpdateClass(context.Context, *UpdateClassRequest) (*UpdateClassResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateClass not implemented")
 }
-func (UnimplementedClassManagerServiceServer) DeleteClass(context.Context, *DeleteClassRequest) (*DeleteClassResponse, error) {
+func (UnimplementedClassManagerServer) DeleteClass(context.Context, *DeleteClassRequest) (*DeleteClassResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteClass not implemented")
 }
-func (UnimplementedClassManagerServiceServer) mustEmbedUnimplementedClassManagerServiceServer() {}
-func (UnimplementedClassManagerServiceServer) testEmbeddedByValue()                             {}
+func (UnimplementedClassManagerServer) mustEmbedUnimplementedClassManagerServer() {}
+func (UnimplementedClassManagerServer) testEmbeddedByValue()                      {}
 
-// UnsafeClassManagerServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ClassManagerServiceServer will
+// UnsafeClassManagerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ClassManagerServer will
 // result in compilation errors.
-type UnsafeClassManagerServiceServer interface {
-	mustEmbedUnimplementedClassManagerServiceServer()
+type UnsafeClassManagerServer interface {
+	mustEmbedUnimplementedClassManagerServer()
 }
 
-func RegisterClassManagerServiceServer(s grpc.ServiceRegistrar, srv ClassManagerServiceServer) {
-	// If the following call pancis, it indicates UnimplementedClassManagerServiceServer was
+func RegisterClassManagerServer(s grpc.ServiceRegistrar, srv ClassManagerServer) {
+	// If the following call pancis, it indicates UnimplementedClassManagerServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&ClassManagerService_ServiceDesc, srv)
+	s.RegisterService(&ClassManager_ServiceDesc, srv)
 }
 
-func _ClassManagerService_CreateClass_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ClassManager_CreateClass_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateClassRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ClassManagerServiceServer).CreateClass(ctx, in)
+		return srv.(ClassManagerServer).CreateClass(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ClassManagerService_CreateClass_FullMethodName,
+		FullMethod: ClassManager_CreateClass_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClassManagerServiceServer).CreateClass(ctx, req.(*CreateClassRequest))
+		return srv.(ClassManagerServer).CreateClass(ctx, req.(*CreateClassRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ClassManagerService_GetClasses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ClassManager_GetClasses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetClassesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ClassManagerServiceServer).GetClasses(ctx, in)
+		return srv.(ClassManagerServer).GetClasses(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ClassManagerService_GetClasses_FullMethodName,
+		FullMethod: ClassManager_GetClasses_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClassManagerServiceServer).GetClasses(ctx, req.(*GetClassesRequest))
+		return srv.(ClassManagerServer).GetClasses(ctx, req.(*GetClassesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ClassManagerService_UpdateClass_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ClassManager_UpdateClass_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateClassRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ClassManagerServiceServer).UpdateClass(ctx, in)
+		return srv.(ClassManagerServer).UpdateClass(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ClassManagerService_UpdateClass_FullMethodName,
+		FullMethod: ClassManager_UpdateClass_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClassManagerServiceServer).UpdateClass(ctx, req.(*UpdateClassRequest))
+		return srv.(ClassManagerServer).UpdateClass(ctx, req.(*UpdateClassRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ClassManagerService_DeleteClass_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ClassManager_DeleteClass_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteClassRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ClassManagerServiceServer).DeleteClass(ctx, in)
+		return srv.(ClassManagerServer).DeleteClass(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ClassManagerService_DeleteClass_FullMethodName,
+		FullMethod: ClassManager_DeleteClass_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClassManagerServiceServer).DeleteClass(ctx, req.(*DeleteClassRequest))
+		return srv.(ClassManagerServer).DeleteClass(ctx, req.(*DeleteClassRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ClassManagerService_ServiceDesc is the grpc.ServiceDesc for ClassManagerService service.
+// ClassManager_ServiceDesc is the grpc.ServiceDesc for ClassManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ClassManagerService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "userAPI.ClassManagerService",
-	HandlerType: (*ClassManagerServiceServer)(nil),
+var ClassManager_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "userAPI.ClassManager",
+	HandlerType: (*ClassManagerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateClass",
-			Handler:    _ClassManagerService_CreateClass_Handler,
+			Handler:    _ClassManager_CreateClass_Handler,
 		},
 		{
 			MethodName: "GetClasses",
-			Handler:    _ClassManagerService_GetClasses_Handler,
+			Handler:    _ClassManager_GetClasses_Handler,
 		},
 		{
 			MethodName: "UpdateClass",
-			Handler:    _ClassManagerService_UpdateClass_Handler,
+			Handler:    _ClassManager_UpdateClass_Handler,
 		},
 		{
 			MethodName: "DeleteClass",
-			Handler:    _ClassManagerService_DeleteClass_Handler,
+			Handler:    _ClassManager_DeleteClass_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -489,101 +451,101 @@ var ClassManagerService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	CourseManagerService_GetCourses_FullMethodName = "/userAPI.CourseManagerService/GetCourses"
+	CourseManager_GetCourses_FullMethodName = "/userAPI.CourseManager/GetCourses"
 )
 
-// CourseManagerServiceClient is the client API for CourseManagerService service.
+// CourseManagerClient is the client API for CourseManager service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type CourseManagerServiceClient interface {
+type CourseManagerClient interface {
 	GetCourses(ctx context.Context, in *GetCoursesRequest, opts ...grpc.CallOption) (*GetCoursesResponse, error)
 }
 
-type courseManagerServiceClient struct {
+type courseManagerClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewCourseManagerServiceClient(cc grpc.ClientConnInterface) CourseManagerServiceClient {
-	return &courseManagerServiceClient{cc}
+func NewCourseManagerClient(cc grpc.ClientConnInterface) CourseManagerClient {
+	return &courseManagerClient{cc}
 }
 
-func (c *courseManagerServiceClient) GetCourses(ctx context.Context, in *GetCoursesRequest, opts ...grpc.CallOption) (*GetCoursesResponse, error) {
+func (c *courseManagerClient) GetCourses(ctx context.Context, in *GetCoursesRequest, opts ...grpc.CallOption) (*GetCoursesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetCoursesResponse)
-	err := c.cc.Invoke(ctx, CourseManagerService_GetCourses_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, CourseManager_GetCourses_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// CourseManagerServiceServer is the server API for CourseManagerService service.
-// All implementations must embed UnimplementedCourseManagerServiceServer
+// CourseManagerServer is the server API for CourseManager service.
+// All implementations must embed UnimplementedCourseManagerServer
 // for forward compatibility.
-type CourseManagerServiceServer interface {
+type CourseManagerServer interface {
 	GetCourses(context.Context, *GetCoursesRequest) (*GetCoursesResponse, error)
-	mustEmbedUnimplementedCourseManagerServiceServer()
+	mustEmbedUnimplementedCourseManagerServer()
 }
 
-// UnimplementedCourseManagerServiceServer must be embedded to have
+// UnimplementedCourseManagerServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedCourseManagerServiceServer struct{}
+type UnimplementedCourseManagerServer struct{}
 
-func (UnimplementedCourseManagerServiceServer) GetCourses(context.Context, *GetCoursesRequest) (*GetCoursesResponse, error) {
+func (UnimplementedCourseManagerServer) GetCourses(context.Context, *GetCoursesRequest) (*GetCoursesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourses not implemented")
 }
-func (UnimplementedCourseManagerServiceServer) mustEmbedUnimplementedCourseManagerServiceServer() {}
-func (UnimplementedCourseManagerServiceServer) testEmbeddedByValue()                              {}
+func (UnimplementedCourseManagerServer) mustEmbedUnimplementedCourseManagerServer() {}
+func (UnimplementedCourseManagerServer) testEmbeddedByValue()                       {}
 
-// UnsafeCourseManagerServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to CourseManagerServiceServer will
+// UnsafeCourseManagerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CourseManagerServer will
 // result in compilation errors.
-type UnsafeCourseManagerServiceServer interface {
-	mustEmbedUnimplementedCourseManagerServiceServer()
+type UnsafeCourseManagerServer interface {
+	mustEmbedUnimplementedCourseManagerServer()
 }
 
-func RegisterCourseManagerServiceServer(s grpc.ServiceRegistrar, srv CourseManagerServiceServer) {
-	// If the following call pancis, it indicates UnimplementedCourseManagerServiceServer was
+func RegisterCourseManagerServer(s grpc.ServiceRegistrar, srv CourseManagerServer) {
+	// If the following call pancis, it indicates UnimplementedCourseManagerServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&CourseManagerService_ServiceDesc, srv)
+	s.RegisterService(&CourseManager_ServiceDesc, srv)
 }
 
-func _CourseManagerService_GetCourses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CourseManager_GetCourses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCoursesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CourseManagerServiceServer).GetCourses(ctx, in)
+		return srv.(CourseManagerServer).GetCourses(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CourseManagerService_GetCourses_FullMethodName,
+		FullMethod: CourseManager_GetCourses_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CourseManagerServiceServer).GetCourses(ctx, req.(*GetCoursesRequest))
+		return srv.(CourseManagerServer).GetCourses(ctx, req.(*GetCoursesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// CourseManagerService_ServiceDesc is the grpc.ServiceDesc for CourseManagerService service.
+// CourseManager_ServiceDesc is the grpc.ServiceDesc for CourseManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var CourseManagerService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "userAPI.CourseManagerService",
-	HandlerType: (*CourseManagerServiceServer)(nil),
+var CourseManager_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "userAPI.CourseManager",
+	HandlerType: (*CourseManagerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetCourses",
-			Handler:    _CourseManagerService_GetCourses_Handler,
+			Handler:    _CourseManager_GetCourses_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -591,177 +553,139 @@ var CourseManagerService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	SessionManagerService_StartSession_FullMethodName = "/userAPI.SessionManagerService/StartSession"
-	SessionManagerService_EndSession_FullMethodName   = "/userAPI.SessionManagerService/EndSession"
-	SessionManagerService_JoinSession_FullMethodName  = "/userAPI.SessionManagerService/JoinSession"
+	SessionManager_StartSession_FullMethodName = "/userAPI.SessionManager/StartSession"
+	SessionManager_EndSession_FullMethodName   = "/userAPI.SessionManager/EndSession"
 )
 
-// SessionManagerServiceClient is the client API for SessionManagerService service.
+// SessionManagerClient is the client API for SessionManager service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type SessionManagerServiceClient interface {
+type SessionManagerClient interface {
 	StartSession(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error)
 	EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error)
-	JoinSession(ctx context.Context, in *JoinSessionRequest, opts ...grpc.CallOption) (*JoinSessionResponse, error)
 }
 
-type sessionManagerServiceClient struct {
+type sessionManagerClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSessionManagerServiceClient(cc grpc.ClientConnInterface) SessionManagerServiceClient {
-	return &sessionManagerServiceClient{cc}
+func NewSessionManagerClient(cc grpc.ClientConnInterface) SessionManagerClient {
+	return &sessionManagerClient{cc}
 }
 
-func (c *sessionManagerServiceClient) StartSession(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error) {
+func (c *sessionManagerClient) StartSession(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(StartSessionResponse)
-	err := c.cc.Invoke(ctx, SessionManagerService_StartSession_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SessionManager_StartSession_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sessionManagerServiceClient) EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error) {
+func (c *sessionManagerClient) EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EndSessionResponse)
-	err := c.cc.Invoke(ctx, SessionManagerService_EndSession_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SessionManager_EndSession_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sessionManagerServiceClient) JoinSession(ctx context.Context, in *JoinSessionRequest, opts ...grpc.CallOption) (*JoinSessionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(JoinSessionResponse)
-	err := c.cc.Invoke(ctx, SessionManagerService_JoinSession_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// SessionManagerServiceServer is the server API for SessionManagerService service.
-// All implementations must embed UnimplementedSessionManagerServiceServer
+// SessionManagerServer is the server API for SessionManager service.
+// All implementations must embed UnimplementedSessionManagerServer
 // for forward compatibility.
-type SessionManagerServiceServer interface {
+type SessionManagerServer interface {
 	StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error)
 	EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error)
-	JoinSession(context.Context, *JoinSessionRequest) (*JoinSessionResponse, error)
-	mustEmbedUnimplementedSessionManagerServiceServer()
+	mustEmbedUnimplementedSessionManagerServer()
 }
 
-// UnimplementedSessionManagerServiceServer must be embedded to have
+// UnimplementedSessionManagerServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedSessionManagerServiceServer struct{}
+type UnimplementedSessionManagerServer struct{}
 
-func (UnimplementedSessionManagerServiceServer) StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error) {
+func (UnimplementedSessionManagerServer) StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StartSession not implemented")
 }
-func (UnimplementedSessionManagerServiceServer) EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error) {
+func (UnimplementedSessionManagerServer) EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EndSession not implemented")
 }
-func (UnimplementedSessionManagerServiceServer) JoinSession(context.Context, *JoinSessionRequest) (*JoinSessionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method JoinSession not implemented")
-}
-func (UnimplementedSessionManagerServiceServer) mustEmbedUnimplementedSessionManagerServiceServer() {}
-func (UnimplementedSessionManagerServiceServer) testEmbeddedByValue()                               {}
+func (UnimplementedSessionManagerServer) mustEmbedUnimplementedSessionManagerServer() {}
+func (UnimplementedSessionManagerServer) testEmbeddedByValue()                        {}
 
-// UnsafeSessionManagerServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SessionManagerServiceServer will
+// UnsafeSessionManagerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SessionManagerServer will
 // result in compilation errors.
-type UnsafeSessionManagerServiceServer interface {
-	mustEmbedUnimplementedSessionManagerServiceServer()
+type UnsafeSessionManagerServer interface {
+	mustEmbedUnimplementedSessionManagerServer()
 }
 
-func RegisterSessionManagerServiceServer(s grpc.ServiceRegistrar, srv SessionManagerServiceServer) {
-	// If the following call pancis, it indicates UnimplementedSessionManagerServiceServer was
+func RegisterSessionManagerServer(s grpc.ServiceRegistrar, srv SessionManagerServer) {
+	// If the following call pancis, it indicates UnimplementedSessionManagerServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&SessionManagerService_ServiceDesc, srv)
+	s.RegisterService(&SessionManager_ServiceDesc, srv)
 }
 
-func _SessionManagerService_StartSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SessionManager_StartSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StartSessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SessionManagerServiceServer).StartSession(ctx, in)
+		return srv.(SessionManagerServer).StartSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SessionManagerService_StartSession_FullMethodName,
+		FullMethod: SessionManager_StartSession_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SessionManagerServiceServer).StartSession(ctx, req.(*StartSessionRequest))
+		return srv.(SessionManagerServer).StartSession(ctx, req.(*StartSessionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SessionManagerService_EndSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SessionManager_EndSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EndSessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SessionManagerServiceServer).EndSession(ctx, in)
+		return srv.(SessionManagerServer).EndSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SessionManagerService_EndSession_FullMethodName,
+		FullMethod: SessionManager_EndSession_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SessionManagerServiceServer).EndSession(ctx, req.(*EndSessionRequest))
+		return srv.(SessionManagerServer).EndSession(ctx, req.(*EndSessionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SessionManagerService_JoinSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(JoinSessionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SessionManagerServiceServer).JoinSession(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SessionManagerService_JoinSession_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SessionManagerServiceServer).JoinSession(ctx, req.(*JoinSessionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-// SessionManagerService_ServiceDesc is the grpc.ServiceDesc for SessionManagerService service.
+// SessionManager_ServiceDesc is the grpc.ServiceDesc for SessionManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var SessionManagerService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "userAPI.SessionManagerService",
-	HandlerType: (*SessionManagerServiceServer)(nil),
+var SessionManager_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "userAPI.SessionManager",
+	HandlerType: (*SessionManagerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "StartSession",
-			Handler:    _SessionManagerService_StartSession_Handler,
+			Handler:    _SessionManager_StartSession_Handler,
 		},
 		{
 			MethodName: "EndSession",
-			Handler:    _SessionManagerService_EndSession_Handler,
-		},
-		{
-			MethodName: "JoinSession",
-			Handler:    _SessionManagerService_JoinSession_Handler,
+			Handler:    _SessionManager_EndSession_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -769,102 +693,101 @@ var SessionManagerService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	NotificationManagerService_GetNotifications_FullMethodName = "/userAPI.NotificationManagerService/GetNotifications"
+	NotificationManager_GetNotifications_FullMethodName = "/userAPI.NotificationManager/GetNotifications"
 )
 
-// NotificationManagerServiceClient is the client API for NotificationManagerService service.
+// NotificationManagerClient is the client API for NotificationManager service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type NotificationManagerServiceClient interface {
+type NotificationManagerClient interface {
 	GetNotifications(ctx context.Context, in *GetNotificationsRequest, opts ...grpc.CallOption) (*GetNotificationsResponse, error)
 }
 
-type notificationManagerServiceClient struct {
+type notificationManagerClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewNotificationManagerServiceClient(cc grpc.ClientConnInterface) NotificationManagerServiceClient {
-	return &notificationManagerServiceClient{cc}
+func NewNotificationManagerClient(cc grpc.ClientConnInterface) NotificationManagerClient {
+	return &notificationManagerClient{cc}
 }
 
-func (c *notificationManagerServiceClient) GetNotifications(ctx context.Context, in *GetNotificationsRequest, opts ...grpc.CallOption) (*GetNotificationsResponse, error) {
+func (c *notificationManagerClient) GetNotifications(ctx context.Context, in *GetNotificationsRequest, opts ...grpc.CallOption) (*GetNotificationsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetNotificationsResponse)
-	err := c.cc.Invoke(ctx, NotificationManagerService_GetNotifications_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NotificationManager_GetNotifications_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// NotificationManagerServiceServer is the server API for NotificationManagerService service.
-// All implementations must embed UnimplementedNotificationManagerServiceServer
+// NotificationManagerServer is the server API for NotificationManager service.
+// All implementations must embed UnimplementedNotificationManagerServer
 // for forward compatibility.
-type NotificationManagerServiceServer interface {
+type NotificationManagerServer interface {
 	GetNotifications(context.Context, *GetNotificationsRequest) (*GetNotificationsResponse, error)
-	mustEmbedUnimplementedNotificationManagerServiceServer()
+	mustEmbedUnimplementedNotificationManagerServer()
 }
 
-// UnimplementedNotificationManagerServiceServer must be embedded to have
+// UnimplementedNotificationManagerServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedNotificationManagerServiceServer struct{}
+type UnimplementedNotificationManagerServer struct{}
 
-func (UnimplementedNotificationManagerServiceServer) GetNotifications(context.Context, *GetNotificationsRequest) (*GetNotificationsResponse, error) {
+func (UnimplementedNotificationManagerServer) GetNotifications(context.Context, *GetNotificationsRequest) (*GetNotificationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNotifications not implemented")
 }
-func (UnimplementedNotificationManagerServiceServer) mustEmbedUnimplementedNotificationManagerServiceServer() {
-}
-func (UnimplementedNotificationManagerServiceServer) testEmbeddedByValue() {}
+func (UnimplementedNotificationManagerServer) mustEmbedUnimplementedNotificationManagerServer() {}
+func (UnimplementedNotificationManagerServer) testEmbeddedByValue()                             {}
 
-// UnsafeNotificationManagerServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to NotificationManagerServiceServer will
+// UnsafeNotificationManagerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to NotificationManagerServer will
 // result in compilation errors.
-type UnsafeNotificationManagerServiceServer interface {
-	mustEmbedUnimplementedNotificationManagerServiceServer()
+type UnsafeNotificationManagerServer interface {
+	mustEmbedUnimplementedNotificationManagerServer()
 }
 
-func RegisterNotificationManagerServiceServer(s grpc.ServiceRegistrar, srv NotificationManagerServiceServer) {
-	// If the following call pancis, it indicates UnimplementedNotificationManagerServiceServer was
+func RegisterNotificationManagerServer(s grpc.ServiceRegistrar, srv NotificationManagerServer) {
+	// If the following call pancis, it indicates UnimplementedNotificationManagerServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&NotificationManagerService_ServiceDesc, srv)
+	s.RegisterService(&NotificationManager_ServiceDesc, srv)
 }
 
-func _NotificationManagerService_GetNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotificationManager_GetNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetNotificationsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotificationManagerServiceServer).GetNotifications(ctx, in)
+		return srv.(NotificationManagerServer).GetNotifications(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotificationManagerService_GetNotifications_FullMethodName,
+		FullMethod: NotificationManager_GetNotifications_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotificationManagerServiceServer).GetNotifications(ctx, req.(*GetNotificationsRequest))
+		return srv.(NotificationManagerServer).GetNotifications(ctx, req.(*GetNotificationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// NotificationManagerService_ServiceDesc is the grpc.ServiceDesc for NotificationManagerService service.
+// NotificationManager_ServiceDesc is the grpc.ServiceDesc for NotificationManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var NotificationManagerService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "userAPI.NotificationManagerService",
-	HandlerType: (*NotificationManagerServiceServer)(nil),
+var NotificationManager_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "userAPI.NotificationManager",
+	HandlerType: (*NotificationManagerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetNotifications",
-			Handler:    _NotificationManagerService_GetNotifications_Handler,
+			Handler:    _NotificationManager_GetNotifications_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
