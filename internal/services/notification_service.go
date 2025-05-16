@@ -5,7 +5,23 @@ import (
 	"User-Backend/internal/models"
 	"database/sql"
 	"fmt"
+	"time"
 )
+
+func CreateNotification(db *sql.DB, userID, title, subtitle string) error {
+	currentTime := time.Now().Format(time.RFC3339)
+
+	_, err := db.Exec(`
+		INSERT INTO notifications(user_id, title, subtitle, time)
+		VALUES ($1, $2, $3, $4)
+	`, userID, title, subtitle, currentTime)
+
+	if err != nil {
+		return fmt.Errorf("error creating notification: %w", err)
+	}
+
+	return nil
+}
 
 func GetNotifications(req *api.GetNotificationsRequest, db *sql.DB) ([]models.Notification, error) {
 

@@ -45,6 +45,12 @@ func CreateClass(req *api.CreateClassRequest, db *sql.DB) (*models.Class, error)
 			if err != nil {
 				return nil, fmt.Errorf("error enrolling student %s: %w", studentEmail, err)
 			}
+			
+			notificationTitle := "You've been added to a new class"
+			notificationSubtitle := fmt.Sprintf("You have been enrolled in %s", req.Name)
+			if err := CreateNotification(db, studentID, notificationTitle, notificationSubtitle); err != nil {
+				return nil, fmt.Errorf("error creating notification for student %s: %w", studentEmail, err)
+			}
 		}
 	}
 
@@ -206,6 +212,13 @@ func UpdateClass(req *api.UpdateClassRequest, db *sql.DB) (*models.Class, error)
 			_, err = stmt.Exec(req.Classroom.Id, studentID)
 			if err != nil {
 				return nil, fmt.Errorf("error enrolling student %s: %w", studentEmail, err)
+			}
+
+			// Create notification for the student
+			notificationTitle := "You've been added to a class"
+			notificationSubtitle := fmt.Sprintf("You have been enrolled in %s", req.Classroom.Name)
+			if err := CreateNotification(db, studentID, notificationTitle, notificationSubtitle); err != nil {
+				return nil, fmt.Errorf("error creating notification for student %s: %w", studentEmail, err)
 			}
 		}
 	}
