@@ -5,6 +5,7 @@ import (
 	"User-Backend/internal/services"
 	"context"
 	"database/sql"
+	"fmt"
 )
 
 type NotificationManagerHandler struct {
@@ -17,6 +18,7 @@ func NewNotificationManagerHandler(db *sql.DB) *NotificationManagerHandler {
 }
 
 func (h *NotificationManagerHandler) GetNotifications(ctx context.Context, req *api.GetNotificationsRequest) (*api.GetNotificationsResponse, error) {
+	fmt.Println("req.UserId", req.UserId)
 	if req.UserId == "" {
 		return &api.GetNotificationsResponse{
 			Notifications: []*api.Notification{},

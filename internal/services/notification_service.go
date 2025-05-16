@@ -24,7 +24,7 @@ func CreateNotification(db *sql.DB, userID, title, subtitle string) error {
 }
 
 func GetNotifications(req *api.GetNotificationsRequest, db *sql.DB) ([]models.Notification, error) {
-
+	fmt.Println("req.UserId", req.UserId)
 	rows, err := db.Query(`
 		SELECT id, title, subtitle, time
 		FROM notifications
@@ -47,5 +47,6 @@ func GetNotifications(req *api.GetNotificationsRequest, db *sql.DB) ([]models.No
 		notifications = append(notifications, notification)
 	}
 
+	fmt.Println("notifications", notifications)
 	return notifications, nil
 }

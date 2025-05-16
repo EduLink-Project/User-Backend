@@ -65,6 +65,7 @@ func Login(req *api.LoginRequest, db *sql.DB) (*models.User, error) {
 		return nil, errors.New("invalid credentials")
 	}
 
+	fmt.Println("userID", userID)
 	token, refreshToken, err := generateTokens(userID, role)
 	if err != nil {
 		return nil, errors.New("error generating authentication tokens")
