@@ -2,24 +2,18 @@ package main
 
 import (
 	"log"
-	"net"
+	"net/http"
 
 	"User-Backend/api"
 	"User-Backend/internal/config"
 	"User-Backend/internal/handlers"
 	"User-Backend/internal/middleware"
 
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"google.golang.org/grpc"
 )
 
 func main() {
-	listener, err := net.Listen("tcp", ":3000")
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	} else {
-		log.Printf("gRPC server listening at 3000")
-	}
-
 	dbPool := config.InitDB()
 	defer dbPool.Close()
 
@@ -39,7 +33,44 @@ func main() {
 	api.RegisterSessionManagerServer(grpcServer, sessionManagerHandler)
 	api.RegisterNotificationManagerServer(grpcServer, notificationManagerHandler)
 
-	if err := grpcServer.Serve(listener); err != nil {
-		log.Fatalf("failed to serve: %s", err)
+	wrappedGrpc := grpcweb.WrapServer(grpcServer,
+		grpcweb.WithOriginFunc(func(origin string) bool {
+			return true
+		}),
+		grpcweb.WithAllowedRequestHeaders([]string{"*"}),
+		grpcweb.WithWebsockets(true),
+		grpcweb.WithWebsocketOriginFunc(func(req *http.Request) bool {
+			return true
+		}),
+	)
+
+	httpServer := &http.Server{
+		Addr: ":3000",
+		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
+			if req.Method == "OPTIONS" {
+				resp.Header().Set("Access-Control-Allow-Origin", "*")
+				resp.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+				resp.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-User-Agent, X-Grpc-Web")
+				resp.Header().Set("Access-Control-Max-Age", "86400")
+				resp.WriteHeader(http.StatusOK)
+				return
+			}
+
+			// Add CORS headers for all responses
+			resp.Header().Set("Access-Control-Allow-Origin", "*")
+			resp.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+			resp.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-User-Agent, X-Grpc-Web")
+
+			if wrappedGrpc.IsGrpcWebRequest(req) {
+				wrappedGrpc.ServeHTTP(resp, req)
+				return
+			}
+			resp.WriteHeader(http.StatusNotFound)
+		}),
+	}
+
+	log.Printf("Starting gRPC-web server on :3000")
+	if err := httpServer.ListenAndServe(); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
 }

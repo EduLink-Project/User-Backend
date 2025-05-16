@@ -27,22 +27,12 @@ func SignUp(req *api.SignUpRequest, db *sql.DB) (*models.User, error) {
 
 	var userID string
 	err = tx.QueryRow(`
-        INSERT INTO users(password, username, email) 
-        VALUES ($1, $2, $3) RETURNING id
-    `, req.Password, req.Username, req.Email).Scan(&userID)
+        INSERT INTO users(password, username, email, role) 
+        VALUES ($1, $2, $3, $4) RETURNING id
+    `, req.Password, req.Username, req.Email, req.Role).Scan(&userID)
 
 	if err != nil {
 		return nil, fmt.Errorf("insert user error: %w", err)
-	}
-
-	if req.Role == "student" {
-		_, err = tx.Exec(`INSERT INTO students(id) VALUES ($1)`, userID)
-	} else {
-		_, err = tx.Exec(`INSERT INTO instructors(id) VALUES ($1)`, userID)
-	}
-
-	if err != nil {
-		return nil, fmt.Errorf("insert role error: %w", err)
 	}
 
 	if err := tx.Commit(); err != nil {
@@ -66,26 +56,13 @@ func SignUp(req *api.SignUpRequest, db *sql.DB) (*models.User, error) {
 }
 
 func Login(req *api.LoginRequest, db *sql.DB) (*models.User, error) {
-	var userID, username, email string
+	var userID, username, email, role string
 
-	query := `SELECT u.id, u.username, u.email FROM users u WHERE u.email = $1 AND u.password = $2`
-	err := db.QueryRow(query, req.Email, req.Password).Scan(&userID, &username, &email)
+	query := `SELECT u.id, u.username, u.email, u.role FROM users u WHERE u.email = $1 AND u.password = $2`
+	err := db.QueryRow(query, req.Email, req.Password).Scan(&userID, &username, &email, &role)
 
 	if err != nil {
 		return nil, errors.New("invalid credentials")
-	}
-
-	var role string
-	var count int
-	err = db.QueryRow("SELECT COUNT(*) FROM students WHERE id = $1", userID).Scan(&count)
-	if err != nil {
-		return nil, errors.New("error verifying user role")
-	}
-
-	if count > 0 {
-		role = "student"
-	} else {
-		role = "instructor"
 	}
 
 	token, refreshToken, err := generateTokens(userID, role)
@@ -105,7 +82,6 @@ func Login(req *api.LoginRequest, db *sql.DB) (*models.User, error) {
 }
 
 func RefreshToken(req *api.RefreshTokenRequest, db *sql.DB) (string, error) {
-
 	token, err := jwt.ParseWithClaims(req.RefreshToken, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		jwtSecretKey := config.GetENVdata("JWT_SECRET")
 		if jwtSecretKey == "" {

@@ -22,7 +22,6 @@ func (c *Class) FromGRPC(grpcClass *api.Class) {
 
 	c.ID = grpcClass.Id
 	c.Name = grpcClass.Name
-	c.UserID = grpcClass.UserId
 	c.Files = grpcClass.Files
 	c.Students = grpcClass.Students
 	c.StartTime = grpcClass.StartTime
@@ -45,7 +44,6 @@ func (c *Class) ToGRPC() *api.Class {
 	return &api.Class{
 		Id:        c.ID,
 		Name:      c.Name,
-		UserId:    c.UserID,
 		Files:     c.Files,
 		Students:  c.Students,
 		StartTime: c.StartTime,

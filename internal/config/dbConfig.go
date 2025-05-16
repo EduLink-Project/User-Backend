@@ -26,11 +26,6 @@ func InitDB() *sql.DB {
 	dbname := GetENVdata("DB_NAME")
 	sslmode := GetENVdata("DB_SSL_MODE")
 	schema := os.Getenv("DB_SCHEMA")
-	
-	if schema == "" {
-		schema = "public"
-		log.Println("DB_SCHEMA not specified, using default schema 'public'")
-	}
 
 	connectionString := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s search_path=%s",

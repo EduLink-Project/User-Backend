@@ -171,12 +171,11 @@ message User {
 message Class {
     string id = 1;
     string name = 2;
-    string userId = 3;
-    repeated string files = 4;
-    repeated string students = 5;
-    string startTime = 6;
-    string endTime = 7;
-    repeated Session sessions = 8;
+    string startTime = 3;
+    string endTime = 4;
+    repeated string files = 5;
+    repeated string students = 6;
+    repeated Session sessions = 7;
 }
 
 message Course {

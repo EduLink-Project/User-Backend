@@ -47,7 +47,7 @@ func (h *ClassManagerHandler) GetClasses(ctx context.Context, req *api.GetClasse
 
 	classes, err := services.GetClasses(req, h.dbCon)
 	if err != nil {
-		return &api.GetClassesResponse{}, nil
+		return nil, err
 	}
 
 	classMessages := make([]*api.Class, 0, len(classes))
