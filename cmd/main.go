@@ -56,7 +56,6 @@ func main() {
 				return
 			}
 
-			// Add CORS headers for all responses
 			resp.Header().Set("Access-Control-Allow-Origin", "*")
 			resp.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 			resp.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-User-Agent, X-Grpc-Web")
