@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net"
 	"net/http"
 
 	"User-Backend/api"
@@ -33,7 +34,18 @@ func main() {
 	api.RegisterSessionManagerServer(grpcServer, sessionManagerHandler)
 	api.RegisterNotificationManagerServer(grpcServer, notificationManagerHandler)
 
-	// Wrap the gRPC server for both web and native clients
+	go func() {
+		lis, err := net.Listen("tcp", ":3001")
+		if err != nil {
+			log.Fatalf("Failed to listen for gRPC: %v", err)
+		}
+
+		log.Printf("Starting standard gRPC server on :3001")
+		if err := grpcServer.Serve(lis); err != nil {
+			log.Fatalf("Failed to serve gRPC: %v", err)
+		}
+	}()
+
 	wrappedGrpc := grpcweb.WrapServer(grpcServer,
 		grpcweb.WithOriginFunc(func(origin string) bool {
 			return true
@@ -43,14 +55,11 @@ func main() {
 		grpcweb.WithWebsocketOriginFunc(func(req *http.Request) bool {
 			return true
 		}),
-		grpcweb.WithCorsForRegisteredEndpointsOnly(false),
 	)
 
-	// Create HTTP server that handles both gRPC and gRPC-web
 	httpServer := &http.Server{
-		Addr: ":8080",
+		Addr: ":3000",
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
-			// Handle CORS preflight requests
 			if req.Method == "OPTIONS" {
 				resp.Header().Set("Access-Control-Allow-Origin", "*")
 				resp.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -60,13 +69,11 @@ func main() {
 				return
 			}
 
-			// Set CORS headers for all responses
 			resp.Header().Set("Access-Control-Allow-Origin", "*")
 			resp.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 			resp.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-User-Agent, X-Grpc-Web")
 
-			// Handle both gRPC-web and standard gRPC requests
-			if wrappedGrpc.IsGrpcWebRequest(req) || wrappedGrpc.IsAcceptableGrpcCorsRequest(req) {
+			if wrappedGrpc.IsGrpcWebRequest(req) {
 				wrappedGrpc.ServeHTTP(resp, req)
 				return
 			}
@@ -74,8 +81,8 @@ func main() {
 		}),
 	}
 
-	log.Printf("Starting server on :8080")
+	log.Printf("Starting gRPC-web server on :3000")
 	if err := httpServer.ListenAndServe(); err != nil {
-		log.Fatalf("Failed to serve: %v", err)
+		log.Fatalf("Failed to serve gRPC-web: %v", err)
 	}
 }
