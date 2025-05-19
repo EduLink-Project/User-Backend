@@ -17,7 +17,6 @@ Built on a scalable architecture, it leverages gRPC, JWT authentication, and a r
 - Go (Programming Language)
 - PostgreSQL (Relational Database)
 - gRPC (API Type)
-- Redis (Cache Management)
 
 ### Installation Instructions
 
