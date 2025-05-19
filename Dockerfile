@@ -21,7 +21,7 @@ RUN adduser -D -g '' appuser
 USER appuser
 
 # Expose port 8080 for App Engine
-EXPOSE 8080
+EXPOSE 3000 3001
 
 # Add health check
 HEALTHCHECK --interval=30s --timeout=3s \
