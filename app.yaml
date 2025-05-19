@@ -1,0 +1,25 @@
+runtime: custom
+env: flex
+
+service: default
+
+network:
+  session_affinity: true
+
+manual_scaling:
+  instances: 1
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+env_variables:
+  DB_HOST: "34.162.2.223"
+  DB_PORT: "5432"
+  DB_USER: "admin"
+  DB_PASSWORD: "sdf90E"
+  DB_NAME: "userdata"
+  DB_SSL_MODE: "disable"
+  DB_SCHEMA: "public"
+  JWT_SECRET: "Bf0QIh/Hiu9Enf95G2cZ2ViHEQHqnqYTluLjZ1hQamc="
